@@ -1,0 +1,94 @@
+{
+    "VP0": {
+        "components": null,
+        "head": "V"
+    },
+    "VP1": {
+        "components": {
+            "subject": "NP"
+        },
+        "order": ["subject", "head"],
+        "head": "V",
+        "agreement": {
+            "subject": ["PERS", "NUM"]
+        }
+    },
+    "VP_COPULA": {
+        "components": {
+            "subject": "NP",
+            "predicative": "NP"
+        },
+        "order": ["subject", "head", "predicative"],
+        "head": "V",
+        "agreement": {
+            "subject": ["PERS", "NUM"]
+        }
+    },
+    "VP2": {
+        "components": {
+            "subject": "NP",
+            "dir_object": "NP"
+        },
+        "order": ["subject", "head", "dir_object"],
+        "head": "V",
+        "agreement": {
+            "subject": ["PERS", "NUM"]
+        }
+    },
+    "VP3": {
+        "components": {
+            "subject": "NP",
+            "dir_object": "NP",
+            "indir_object": "NP"
+        },
+        "order": ["subject", "head", "dir_object", "indir_object"],
+        "head": "V",
+        "agreement": {
+            "subject": ["PERS", "NUM"]
+        }
+    },
+    "GENERIC_P":{
+        "components": null,
+        "head": "GENERIC",
+        "order": ["head"]
+    },
+    "NP": {
+        "components": {
+            "attribute": "AP*"
+        },
+        "order": ["attribute", "head"],
+        "head": "N"
+    },
+    "AP": {
+        "components": {
+            "attribute": "AdvP?"
+        },
+        "order": ["attribute", "head"],
+        "head": "A",
+        "agreement": {
+            "parent": ["CASE", "NUM"]
+        }
+    },
+    "AdvP": {
+        "components": {
+            "attribute": "AdvP?"
+        },
+        "order": ["attribute", "head"],
+        "head": "Adv"
+    },
+    "PrepP":{
+        "components": {
+            "complement": "NP"
+        },
+        "order": ["head", "complement"],
+        "head": "Prep"
+    },
+    "PostP":{
+        "components": {
+            "complement": "NP"
+        },
+        "order": ["complement", "head"],
+        "head": "Post"
+    }
+
+}
