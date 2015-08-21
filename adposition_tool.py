@@ -9,7 +9,7 @@ postpositions = {}
 
 def load_csv(dictionary, file):
 
-    reader = csv.reader(open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data/"+file), 'r'))
+    reader = csv.reader(open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", file), 'r'))
     for row in reader:
        k, v = row
        dictionary[k] = v

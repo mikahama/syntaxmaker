@@ -6,8 +6,12 @@ from itertools import ifilterfalse as ffilter
 
 
 datadir = "/usr/local/share/hfst/fi/"
-analysis_set = os.path.abspath(datadir + "/omorfi-omor.analyse.hfst")
-generation_set = os.path.abspath(datadir + "/omorfi-omor.generate.hfst")
+if os.name == 'nt':
+    #Windows
+    datadir = "C:\\omorfi\\hfst\\fi\\"
+
+analysis_set = os.path.abspath(datadir + "omorfi-omor.analyse.hfst")
+generation_set = os.path.abspath(datadir + "omorfi-omor.generate.hfst")
 
 
 #istr1 = libhfst.HfstInputStream(analysis_set)
