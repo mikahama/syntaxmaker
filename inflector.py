@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import libhfst
+import hfst
 import os
 import pronoun_tool
 from itertools import ifilterfalse as ffilter
@@ -10,14 +10,11 @@ if os.name == 'nt':
     #Windows
     datadir = "C:\\omorfi\\hfst\\fi\\"
 
-analysis_set = os.path.abspath(datadir + "omorfi-omor.analyse.hfst")
 generation_set = os.path.abspath(datadir + "omorfi-omor.generate.hfst")
 
 
-#istr1 = libhfst.HfstInputStream(analysis_set)
-istr2 = libhfst.HfstInputStream(generation_set)
-#analyser = libhfst.HfstTransducer(istr1)
-synthetiser = libhfst.HfstTransducer(istr2)
+input_stream = hfst.HfstInputStream(generation_set)
+synthetiser = input_stream.read()
 
 
 case_suffixes ={"PAR":"A", "NOM": "","GEN":"n","ESS":"nA", "TRA": "ksi", "INE": "ssA", "ELA": "stA", "ADE": "llA", "ABL": "ltA", "ALL": "lle", "ABE": "ttA", "ILL": "n"}
@@ -193,8 +190,8 @@ def standard_nominal_inflection(noun, case, number):
     return noun
 
 def new_generator(analysis):
-    word = synthetiser.lookup_fd(analysis)
-    results = process_result_vector(libhfst.vectorize(word))
+    print analysis
+    results = synthetiser.lookup(analysis)
     if len(results) != 0:
         word = results[0][0]
         return word
