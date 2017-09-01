@@ -190,7 +190,6 @@ def standard_nominal_inflection(noun, case, number):
     return noun
 
 def new_generator(analysis):
-    print analysis
     results = synthetiser.lookup(analysis)
     if len(results) != 0:
         word = results[0][0]
