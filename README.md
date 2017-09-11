@@ -17,4 +17,4 @@ After installing it, go to [Creating a sentence, the basics](https://github.com/
 
 # More information?
 
-Just go ahead and [take a look at the wiki.](https://github.com/mikahama/syntaxmaker/wiki)
+Just go ahead and [take a look at the wiki](https://github.com/mikahama/syntaxmaker/wiki) or my [blog post about Syntax maker](https://mikalikes.men/create-finnish-sentences-computationally-in-python-nlg/).
