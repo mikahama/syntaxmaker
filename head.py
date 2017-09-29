@@ -1,3 +1,5 @@
+#encoding: utf-8
+__author__ = 'Mika Hämäläinen'
 import inflector
 
 class Head:

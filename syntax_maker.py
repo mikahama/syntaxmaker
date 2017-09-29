@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+__author__ = 'Mika Hämäläinen'
 import verb_valence
 from phrase import Phrase
 import json
@@ -246,14 +247,14 @@ turn_vp_into_prefect(vp)
 set_vp_mood_and_tense(vp, mood="POTN")
 
 turn_vp_into_question(vp)
-print vp.to_string()
+print(vp.to_string())
 
 np = create_phrase("NP", "kissa")
 pp = create_adposition_phrase("ilman", np)
-print pp.to_string()
-"""
+print(pp.to_string())
 
-"""
+
+
 np1 = create_phrase("NP", "mies")
 relp = create_verb_pharse("katsoa")
 ppp = create_phrase("NP", "orava")
@@ -272,5 +273,7 @@ pp = create_adposition_phrase("alla", np2)
 
 add_advlp_to_vp(vep, pp)
 
-print vep
+print(vep)
+
+
 """

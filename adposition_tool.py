@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-__author__ = 'mikahama'
+__author__ = 'Mika Hämäläinen'
 import csv
 import random
 import os

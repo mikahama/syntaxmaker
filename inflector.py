@@ -1,9 +1,18 @@
 # -*- coding: utf-8 -*-
+__author__ = 'Mika Hämäläinen'
 import hfst
 import os
 import pronoun_tool
-from itertools import ifilterfalse as ffilter
+import sys
 
+if (sys.version_info > (3, 0)):
+    # Python 3
+    new_python = True
+    from itertools import filterfalse as ffilter
+else:
+    # Python 2
+    new_python = False
+    from itertools import ifilterfalse as ffilter
 
 datadir = "/usr/local/share/hfst/fi/"
 if os.name == 'nt':
@@ -25,10 +34,10 @@ vowels = "aeiouyäö"
 
 def inflect(word, pos, args):
     for el in args:
-        if type(args[el]) is unicode:
+        if not new_python and type(args[el]) is unicode:
             args[el] = args[el].encode('utf-8')
 
-    if type(word) is unicode:
+    if not new_python and type(word) is unicode:
         word = word.encode('utf-8')
     word = word.replace("|", "")
     if len(args) == 0:
