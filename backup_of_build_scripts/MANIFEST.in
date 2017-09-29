@@ -5,6 +5,6 @@ include DESCRIPTION.rst
 
 # If using Python 2.6 or less, then have to include package data, even though
 # it's already declared in setup.py
-include verb_valences_new.bin
+include verb_valences_new.json
 include data/postpositions.csv
 include data/prepositions.csv
