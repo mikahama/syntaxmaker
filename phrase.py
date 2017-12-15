@@ -1,10 +1,17 @@
-__author__ = 'mikahama'
+#encoding: utf-8
+__author__ = 'Mika Hämäläinen'
 from head import Head
 import copy
-import re
+import re, sys
 
 class Phrase:
     def __init__(self, head, structure, morphology={}):
+        if (sys.version_info > (3, 0)):
+            # Python 3
+            self.new_python = True
+        else:
+            # Python 2
+            self.new_python = False
         self.parent = None
         self.head = Head(head, structure["head"])
         self.components = copy.deepcopy(structure["components"])
@@ -46,7 +53,7 @@ class Phrase:
                 string_representation = string_representation + " " + head_word
             else:
                 phrase = self.components[item]
-                if type(phrase) is str or type(phrase) is unicode:
+                if type(phrase) is str or (not self.new_python and type(phrase) is unicode):
                     #Data not set
                     pass
                 else:

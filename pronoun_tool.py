@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-__author__ = 'mikahama'
-import pickle
-import random
-import os
+__author__ = 'mika hämäläinen'
 
 
 pronouns = {"SG1" : "minä", "SG2" : "sinä", "SG3" : "se", "PL1" : "me", "PL2": "te", "PL3": "ne"}

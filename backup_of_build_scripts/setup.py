@@ -23,16 +23,16 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.0.2',
+    version='1.1.0',
 
     description='An NLG tool for Finnish',
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/DiscoveryGroup/syntaxmaker/',
+    url='https://mikakalevi.com/nlp/syntax-maker/',
 
     # Author details
-    author='Mika Hämäläinen, University of Helsinki',
+    author='Mika Hämäläinen, Dept. of  Modern Languages, University of Helsinki',
     author_email='mika.hamalainen@cs.helsinki.fi',
 
     # Choose your license
@@ -51,12 +51,10 @@ setup(
         'Topic :: Text Processing',
         "Natural Language :: Finnish",
 
-        # Pick your license as you wish (should match "license" above)
-        'License :: OSI Approved ::  Apache Software License',
-
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
         'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
 
@@ -74,7 +72,7 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=[],
+    install_requires=["hfst"],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,
@@ -86,7 +84,7 @@ setup(
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
     package_data={
-        'syntaxmaker': ['verb_valences_new.bin', 'data/*.csv', '*.json'],
+        'syntaxmaker': ['verb_valences_new.json', 'data/*.csv', '*.json'],
     },
 
     # Although 'package_data' is the preferred approach, in some case you may
