@@ -15,6 +15,14 @@ For instance, just throw in words `rantaleijona`, `uneksia`, `korkea` and `aalto
 You do `pip install syntaxmaker` to install this library.
 After installing it, go to [Creating a sentence, the basics](https://github.com/DiscoveryGroup/syntaxmaker/wiki/Creating-a-sentence,-the-basics) for a quick start guide.
 
+# Cite
+
+If you use Syntax Maker in any academic publication, please cite it as follows:
+
+Mika Hämäläinen. (2018, January 9). Syntax Maker (Version v1). Zenodo. http://doi.org/10.5281/zenodo.1143056
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1143056.svg)](https://doi.org/10.5281/zenodo.1143056)
+
 # More information?
 
 Just go ahead and [take a look at the wiki](https://github.com/mikahama/syntaxmaker/wiki) or my [blog post about Syntax maker](https://mikalikes.men/create-finnish-sentences-computationally-in-python-nlg/).
