@@ -12,7 +12,7 @@ For instance, just throw in words `rantaleijona`, `uneksia`, `korkea` and `aalto
 2. HFST `pip install hfst` for more instructions, see my post about [HFST and Python](https://mikalikes.men/using-hfst-on-python/).
 
 # Installing
-You do `pip install syntaxmaker` to install this library.
+Run `pip install syntaxmaker` to install this library.
 After installing it, go to [Creating a sentence, the basics](https://github.com/DiscoveryGroup/syntaxmaker/wiki/Creating-a-sentence,-the-basics) for a quick start guide.
 
 # Cite
@@ -25,7 +25,7 @@ Mika Hämäläinen. (2018, January 9). Syntax Maker (Version v1). Zenodo. http:/
 
 Or the paper describing Syntax Maker:
 
-Hämäläinen, M. and Rueter, J.  2018.  Development of an Open Source Natural Language Generation Tool for Finnish.  In *Proceedings of the Fourth International Workshop on Computatinal Linguistics of Uralic Languages*, 51–58.
+Hämäläinen, M. and Rueter, J.  2018.  [Development of an Open Source Natural Language Generation Tool for Finnish](http://aclweb.org/anthology/W18-0205).  In *Proceedings of the Fourth International Workshop on Computatinal Linguistics of Uralic Languages*, 51–58.
 
 # More information?
 
