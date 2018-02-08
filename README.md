@@ -23,6 +23,10 @@ Mika Hämäläinen. (2018, January 9). Syntax Maker (Version v1). Zenodo. http:/
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1143056.svg)](https://doi.org/10.5281/zenodo.1143056)
 
+Or the paper describing Syntax Maker:
+
+Hämäläinen, M. and Rueter, J.  2018.  Development of an Open Source Natural Language Generation Tool for Finnish.  In *Proceedings of the Fourth International Workshop on Computatinal Linguistics of Uralic Languages*, 51–58.
+
 # More information?
 
 Just go ahead and [take a look at the wiki](https://github.com/mikahama/syntaxmaker/wiki) or my [blog post about Syntax maker](https://mikalikes.men/create-finnish-sentences-computationally-in-python-nlg/).
