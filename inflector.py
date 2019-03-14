@@ -90,6 +90,8 @@ def inflect(word, pos, args):
             if "TEMPAUX"  in args and args["PERS"] == "4":
                 #on syöty
                 omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE=ACT][MOOD="+ args["MOOD"] +"]"+tense+"[PERS=SG3]"
+            elif "PERS" in args and args["PERS"] == "4":
+                omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE="+voice+"][MOOD="+ args["MOOD"] +"]"+tense+pers_string +clit
             else:
                 omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE="+voice+"][MOOD="+ args["MOOD"] +"]"+tense+"[PERS="+args["NUM"]+args["PERS"]+"]" +clit
     elif pos == "PPron":
