@@ -19,12 +19,6 @@ After installing it, go to [Creating a sentence, the basics](https://github.com/
 
 If you use Syntax Maker in any academic publication, please cite it as follows:
 
-Mika Hämäläinen. (2018, January 9). Syntax Maker (Version v1). Zenodo. http://doi.org/10.5281/zenodo.1143056
-
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1143056.svg)](https://doi.org/10.5281/zenodo.1143056)
-
-Or the paper describing Syntax Maker:
-
 Hämäläinen, M. and Rueter, J.  2018.  [Development of an Open Source Natural Language Generation Tool for Finnish](http://aclweb.org/anthology/W18-0205).  In *Proceedings of the Fourth International Workshop on Computatinal Linguistics of Uralic Languages*, 51–58.
 
 # More information?
