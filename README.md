@@ -19,7 +19,7 @@ After installing it, go to [Creating a sentence, the basics](https://github.com/
 
 If you use Syntax Maker in any academic publication, please cite it as follows:
 
-Hämäläinen, M. and Rueter, J.  2018.  [Development of an Open Source Natural Language Generation Tool for Finnish](http://aclweb.org/anthology/W18-0205).  In *Proceedings of the Fourth International Workshop on Computational Linguistics of Uralic Languages*, 51–58.
+Hämäläinen, Mika and Rueter, Jack  2018.  [Development of an Open Source Natural Language Generation Tool for Finnish](http://aclweb.org/anthology/W18-0205).  In *Proceedings of the Fourth International Workshop on Computational Linguistics of Uralic Languages*, 51–58.
 
 # More information?
 
