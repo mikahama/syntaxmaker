@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Mika Hämäläinen'
-import verb_valence
-from phrase import Phrase
+from . import verb_valence
+from .phrase import Phrase
 import json
 import random
-import pronoun_tool
-import adposition_tool
+from . import pronoun_tool
+from . import adposition_tool
 import os
 
 auxiliary_verbs = {"voida" : "A",

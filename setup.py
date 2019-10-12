@@ -23,13 +23,13 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.1.0',
+    version='1.1.1',
 
     description='An NLG tool for Finnish',
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://mikakalevi.com/nlp/syntax-maker/',
+    url='https://github.com/mikahama/syntaxmaker/',
 
     # Author details
     author='Mika Hämäläinen, Dept. of  Modern Languages, University of Helsinki',

@@ -2,7 +2,7 @@
 __author__ = 'Mika Hämäläinen'
 import hfst
 import os
-import pronoun_tool
+from . import pronoun_tool
 import sys
 
 if (sys.version_info > (3, 0)):

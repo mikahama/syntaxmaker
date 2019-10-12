@@ -1,6 +1,6 @@
 #encoding: utf-8
 __author__ = 'Mika Hämäläinen'
-import inflector
+from . import inflector
 
 class Head:
     def __init__(self, head, pos):

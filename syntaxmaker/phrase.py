@@ -1,6 +1,6 @@
 #encoding: utf-8
 __author__ = 'Mika Hämäläinen'
-from head import Head
+from .head import Head
 import copy
 import re, sys
 
