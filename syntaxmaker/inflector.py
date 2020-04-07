@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Mika Hämäläinen'
-import hfst
+
 import os
 from . import pronoun_tool
 import sys
+from uralicNLP import uralicApi
 
 if (sys.version_info > (3, 0)):
     # Python 3
@@ -13,17 +14,6 @@ else:
     # Python 2
     new_python = False
     from itertools import ifilterfalse as ffilter
-
-datadir = "/usr/local/share/hfst/fi/"
-if os.name == 'nt':
-    #Windows
-    datadir = "C:\\omorfi\\hfst\\fi\\"
-
-generation_set = os.path.abspath(datadir + "omorfi-omor.generate.hfst")
-
-
-input_stream = hfst.HfstInputStream(generation_set)
-synthetiser = input_stream.read()
 
 
 case_suffixes ={"PAR":"A", "NOM": "","GEN":"n","ESS":"nA", "TRA": "ksi", "INE": "ssA", "ELA": "stA", "ADE": "llA", "ABL": "ltA", "ALL": "lle", "ABE": "ttA", "ILL": "n"}
@@ -39,6 +29,11 @@ def inflect(word, pos, args):
         beginning = beginning.replace("|","")
     if len(args) == 0:
         return beginning + word
+    clit =""
+    if "CLIT" in args:
+        if args["CLIT"] == "KO":
+            args["CLIT"] = "QST"
+        clit = "+" +args["CLIT"].title()
     if pos == "GENERIC":
         return word
     elif pos == "V":
@@ -48,23 +43,23 @@ def inflect(word, pos, args):
         else:
             voice = "ACT"
             pers_string = ""
-        if "MOOD" not in args:
-            args["MOOD"] = "INDV"
-        if args["MOOD"] != "INDV":
+        if "MOOD" not in args or args["MOOD"] == "INDV":
+            args["MOOD"] = "IND"
+        if args["MOOD"] == "POTN":
+            args["MOOD"] = "POT"
+        if args["MOOD"] != "IND":
             tense = ""
         else:
             if "TENSE" not in args:
-                tense = "[TENSE=PRESENT]"
-            else:
-                tense = "[TENSE="+args["TENSE"]+"]"
-        if "CLIT" in args:
-            clit = "[CLIT=" + args["CLIT"] + "]"
-        else:
-            clit = ""
+                tense = "+Prs"
+            elif args["TENSE"] == "PRESENT":
+                tense = "+Prs"
+            elif args["TENSE"] == "PAST":
+                tense = "+Prt"
 
         if word == "ei":
             ei_form = ei_forms[args["NUM"]+args["PERS"]]
-            if "CLIT" in args and args["CLIT"] == "KO":
+            if "CLIT" in args and args["CLIT"] == "QST":
                 ei_form = ei_form + "kö"
             return beginning + ei_form
 
@@ -74,65 +69,78 @@ def inflect(word, pos, args):
                 return beginning + word
             else:
                 #syömään, juomaan
-                omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE="+voice+"][INF="+args["INF"]+"][CASE=ILL]"
+                #omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE="+voice+"][INF="+args["INF"]+"][CASE=ILL]"
+                omorfi_query = word + "+V+Act+Inf"+args["INF"].title()+"+Sg+Ill"
         elif "NEG" in args and args["NEG"]:
             #(en) syö, juo...
-            if "TEMPAUX"  in args and args["PERS"] == "4" and tense == "[TENSE=PRESENT]":
+            if "TEMPAUX"  in args and args["PERS"] == "4" and tense == "+Prs":
                 # ei ole syöty
-                omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE=ACT][MOOD="+ args["MOOD"] +"]"+tense+"[NEG=CON]"
+                #omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE=ACT][MOOD="+ args["MOOD"] +"]"+tense+"[NEG=CON]"
+                omorfi_query = word+"+V+Pss+"+ args["MOOD"].title() +"+Prt+ConNeg"
             else:
-                omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE="+voice+"][MOOD="+ args["MOOD"] +"]"+tense+ pers_string+"[NEG=CON]"
+                omorfi_query = word+"+V+"+voice.title()+"+"+args["MOOD"].title()+tense.title()+"+ConNeg"
+                #omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE="+voice+"][MOOD="+ args["MOOD"] +"]"+tense+ pers_string+"[NEG=CON]"
         else:
             #syön, juon
             if "TEMPAUX"  in args and args["PERS"] == "4":
                 #on syöty
-                omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE=ACT][MOOD="+ args["MOOD"] +"]"+tense+"[PERS=SG3]"
+                omorfi_query = word + "+V+Pss+PrfPrc+Sg+Nom"
+                #omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE=ACT][MOOD="+ args["MOOD"] +"]"+tense+"[PERS=SG3]"
             elif "PERS" in args and args["PERS"] == "4":
-                omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE="+voice+"][MOOD="+ args["MOOD"] +"]"+tense+pers_string +clit
+                #omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE="+voice+"][MOOD="+ args["MOOD"] +"]"+tense+pers_string +clit
+                omorfi_query = word + "+V+Pss+"+args["MOOD"].title()+tense+"+Pe4" +clit
             else:
-                omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE="+voice+"][MOOD="+ args["MOOD"] +"]"+tense+"[PERS="+args["NUM"]+args["PERS"]+"]" +clit
+                omorfi_query = word + "+V+"+voice.title()+"+"+ args["MOOD"].title() +tense+ "+" + args["NUM"].title() + args["PERS"]+ clit
+                #print(omorfi_query)
+                #omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE="+voice+"][MOOD="+ args["MOOD"] +"]"+tense+"[PERS="+args["NUM"]+args["PERS"]+"]" +clit
     elif pos == "PPron":
         #personal pronoun
-        if args["CASE"] == "Gen":
+        if "CASE" in args and args["CASE"] == "Gen":
             args["CASE"] = "ACC"
+        if "CASE" in args and args["CASE"] == "TrueGen":
+            args["CASE"] = "GEN"
         else:
             args["CASE"] = args["CASE"].upper()
-        omorfi_query = "[WORD_ID="+word+"][POS=PRONOUN][SUBCAT=PERSONAL][PERS="+args["NUM"]+args["PERS"]+"][NUM="+args["NUM"]+"][CASE="+args["CASE"]+"]"
+        omorfi_query = word + "+Pron+Pers+"+args["NUM"].title()+args["PERS"]+"+"+ args["CASE"].title() + clit
+        #omorfi_query = "[WORD_ID="+word+"][POS=PRONOUN][SUBCAT=PERSONAL][PERS="+args["NUM"]+args["PERS"]+"][NUM="+args["NUM"]+"][CASE="+args["CASE"]+"]"
     elif pos == "PastParticiple":
         #participle, syönyt, syöneet, syöty
         if args["NUM"] == "PE":
             #passive
-            omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE=PSS][MOOD=INDV][TENSE=PAST][PERS=PE4][NEG=CON]"
+            #omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE=PSS][MOOD=INDV][TENSE=PAST][PERS=PE4][NEG=CON]"
+            omorfi_query = word + "+V+Pss+PrfPrc+Sg+Nom"
         else:
             #active
             num = args["NUM"]
-            omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE=ACT][MOOD=INDV][TENSE=PAST][NUM="+num+"][NEG=CON]"
+            #omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE=ACT][MOOD=INDV][TENSE=PAST][NUM="+num+"][NEG=CON]"
+            omorfi_query = word+"+V+Act+PrfPrc+"+num.title()+"+Nom"
     elif pos == "RelPron":
-        case = args["CASE"].upper()
-        if case == "NOM":
-            if args["NUM"] == "SG":
-                return beginning + "joka"
-            else:
-                return beginning + "jotka"
-        omorfi_query = "[WORD_ID="+word+"][POS=PRONOUN][SUBCAT=RELATIVE][NUM="+args["NUM"]+"][CASE="+case+"]"
+        case = args["CASE"]
+        #omorfi_query = "[WORD_ID="+word+"][POS=PRONOUN][SUBCAT=RELATIVE][NUM="+args["NUM"]+"][CASE="+case+"]"
+        omorfi_query = word + "+Pron+Rel+"+args["NUM"].title()+"+" + case.title()
     else:
         if pos == "N":
-            pos = "NOUN"
+            pos = "N"
+        elif pos == "N+Prop":
+            pass
         else:
-            pos = "ADJECTIVE"
+            pos = "A"
 
         if "CASE" not in args:
             args["CASE"] = "NOM"
         else:
             args["CASE"] = args["CASE"].upper()
-        omorfi_query = "[WORD_ID="+word+"][POS="+pos+"][NUM="+args["NUM"]+"][CASE="+args["CASE"]+"]"
-    #word_form = old_generator(omorfi_query)
-    word_form = new_generator(omorfi_query)
-    if word_form is None:
+        #omorfi_query = "[WORD_ID="+word+"][POS="+pos+"][NUM="+args["NUM"]+"][CASE="+args["CASE"]+"]"
+        omorfi_query = word +"+" +pos+"+" + args["NUM"].title() +"+" + args["CASE"].title()
+    word_form = uralicApi.generate(omorfi_query, "fin")
+    if len(word_form) == 0:
         #Generation failed!
-        return beginning + backup_inflect(word, pos, args)
+        if pos == "N":
+            return inflect(beginning + "|" + word, "N+Prop", args)
+        else:
+            return beginning + backup_inflect(word, pos, args)
     else:
-        return beginning + word_form
+        return beginning + word_form[0][0]
 
 def backup_inflect(word, pos, args):
     if pos == "NOUN" or pos == "ADJECTIVE":
@@ -197,28 +205,3 @@ def standard_nominal_inflection(noun, case, number):
     noun = noun + case_harmony(case, noun)
     return noun
 
-def new_generator(analysis):
-    results = synthetiser.lookup(analysis)
-    if len(results) != 0:
-        word = results[0][0]
-        return word
-    else:
-        return None
-
-def old_generator(omorfi_query):
-    result = os.popen("echo \"" + omorfi_query + "\" | omorfi-generate.sh").read()
-    word_form = result.split("\t")[1]
-    if "[" in word_form:
-        return None
-    else:
-        return word_form
-
-def process_result_vector(vector):
-    results = []
-    for entry in vector:
-        if len(entry) < 2:
-            continue
-        weight = entry[0]
-        string = ''.join(ffilter(libhfst.FdOperation.is_diacritic, entry[1]))
-        results.append((string, weight))
-    return results

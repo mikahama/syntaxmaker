@@ -101,7 +101,7 @@ class TestFSTS(unittest.TestCase):
         add_advlp_to_vp(vp, adp)
         self.assertEqual(str(vp) , "koira on ilman eläintä")
 
-    def test_palce_name(self):
+    def test_place_name(self):
         vp = create_copula_phrase()
         subject = create_phrase("NP", "koira", {u"PERS": "3", u"NUM": "SG"})
         predicative = create_phrase("NP", "Venäjä")
@@ -109,6 +109,53 @@ class TestFSTS(unittest.TestCase):
         add_advlp_to_vp(vp, predicative, place_type="in")
         self.assertEqual(str(vp) , "koira on Venäjällä")
 
+    def test_possessive_name(self):
+        vp = create_copula_phrase()
+        subject = create_phrase("NP", "koira", {u"PERS": "3", u"NUM": "SG"})
+        predicative = create_phrase("NP", "Lontoo")
+        add_possessive_to_np(predicative, "1", "SG")
+        vp.components["subject"] = subject
+        add_advlp_to_vp(vp, predicative, place_type="in")
+        self.assertEqual(str(vp) , "koira on minun Lontoossani")
+
+    def test_pp_acc(self):
+        vp = create_verb_pharse("nähdä")
+        add_np_subject_to_vp(vp, create_noun_phrase("hattu"))
+        add_np_object_to_vp(vp, create_personal_pronoun_phrase("1", "SG"))
+        self.assertEqual(str(vp) , "hattu näkee minut")
+
+    def test_neg(self):
+        vp = create_verb_pharse("nähdä")
+        add_np_subject_to_vp(vp, create_personal_pronoun_phrase("1", "SG"))
+        add_np_object_to_vp(vp, create_personal_pronoun_phrase("2", "SG"))
+        negate_verb_pharse(vp)
+        turn_vp_into_question(vp)
+        self.assertEqual(str(vp) , "enkö minä näe sinua")
+
+    def test_prefect_last_pass(self):
+        vp = copy.deepcopy(self.vp)
+        turn_vp_into_prefect(vp)
+        turn_vp_into_passive(vp)
+        set_vp_mood_and_tense(vp, tense="PAST")
+        self.assertEqual(str(vp) , "oli uneksittu erittäin korkeista aalloista")
+
+    def test_prefect_last_pass_neg(self):
+        vp = copy.deepcopy(self.vp)
+        turn_vp_into_prefect(vp)
+        turn_vp_into_passive(vp)
+        set_vp_mood_and_tense(vp, tense="PAST")
+        negate_verb_pharse(vp)
+        self.assertEqual(str(vp) , "ei oltu uneksittu erittäin korkeista aalloista")
+
+    def test_sentence_can(self):
+        vp = copy.deepcopy(self.vp)
+        add_auxiliary_verb_to_vp(vp, "voida")
+        self.assertEqual(str(vp) , "rantaleijonat voivat uneksia erittäin korkeista aalloista")
+
+    def test_sentence_stay(self):
+        vp = copy.deepcopy(self.vp)
+        add_auxiliary_verb_to_vp(vp, "jäädä")
+        self.assertEqual(str(vp) , "rantaleijonat jäävät uneksimaan erittäin korkeista aalloista")
 
 
 if __name__ == '__main__':

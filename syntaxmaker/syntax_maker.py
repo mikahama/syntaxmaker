@@ -7,7 +7,7 @@ import random
 from . import pronoun_tool
 from . import adposition_tool
 import os
-from . import noun_tool
+from . import noun_tool, ValencyException
 
 auxiliary_verbs = {"voida" : "A",
 "saada" : "A",
@@ -42,16 +42,12 @@ def create_verb_pharse(head):
     global grammar
     phrase_type = verb_valence.valency_count(head)
     governance = {}
-    if phrase_type > 1:
-        #direct object case government
-        dir_obj = {}
-        dir_obj[u"CASE"] = verb_valence.most_frequent_case(verb_valence.verb_direct_objects(head))
-        governance["dir_object"] = dir_obj
-    if phrase_type > 2:
-        #indirect object case goverment
-        indir_obj = {}
-        indir_obj[u"CASE"] = verb_valence.most_frequent_case(verb_valence.verb_indirect_objects(head))
-        governance["indir_object"] = indir_obj
+    dir_obj = {}
+    dir_obj[u"CASE"] = verb_valence.most_frequent_case(verb_valence.verb_direct_objects(head))
+    governance["dir_object"] = dir_obj
+    indir_obj = {}
+    indir_obj[u"CASE"] = verb_valence.most_frequent_case(verb_valence.verb_indirect_objects(head))
+    governance["indir_object"] = indir_obj
 
     phrase_structure = grammar["VP"+str(phrase_type)]
     phrase_structure["governance"] = governance
@@ -70,11 +66,17 @@ def create_phrase(name, head, morphology={}):
                 morphology[key] = default_np_morphology[key]
     return Phrase(head, structure, morphology)
 
-def create_personal_pronoun_phrase(person = "1", number = "SG", prodrop=False):
+def create_noun_phrase(head, morphology={}):
+    return create_phrase("NP", head, morphology)
+
+def create_adjective_phrase(head, morphology={}):
+    return create_phrase("AP", head, morphology)
+
+def create_personal_pronoun_phrase(person = "1", number = "SG", prodrop=False, human=False):
     if prodrop and person != "3":
         pronoun = None
     else:
-        pronoun = pronoun_tool.pronoun(number + person)
+        pronoun = pronoun_tool.pronoun(number + person, human=human)
     pp = create_phrase("NP", pronoun, {u"PERS": person, u"NUM": number})
     pp.head.pos = "PPron"
     return pp
@@ -112,6 +114,32 @@ def turn_vp_into_question(vp):
 
     vp.order.remove(move_front)
     vp.order.insert(0, move_front)
+
+def add_np_subject_to_vp(vp, np):
+    if "subject" not in vp.order:
+        raise ValencyException("This verb "+str(vp.head)+" does not accept a subject")
+    else:
+        vp.components["subject"] = np
+
+def add_np_object_to_vp(vp, np, indirect=False, check_valency=False):
+    if not indirect:
+        if "predicative" in vp.order:
+            vp.components["predicative"] = np
+        elif "dir_object"  in vp.order:
+            vp.components["dir_object"] = np
+        elif check_valency == False:
+            vp.order.append("dir_object")
+            vp.components["dir_object"] = np
+        else:
+            raise ValencyException("This verb "+str(vp.head)+" does not accept an object or a predicative")
+    else:
+        if "indir_object"  in vp.order:
+            vp.components["indir_object"] = np
+        elif check_valency == False:
+            vp.components["indir_object"] = np
+            vp.order.append("indir_object")
+        else:
+            raise ValencyException("This verb "+str(vp.head)+" does not accept an indirect object")
 
 
 def add_auxiliary_verb_to_vp(vp, aux=None):
@@ -222,6 +250,20 @@ def create_adposition_phrase(adposition, np):
     phrase.governance["complement"] = {u"CASE": case}
     phrase.components["complement"] = np
     return phrase
+
+def add_possessive_to_np(np, person, number, prodrop=False, human=False, suffix=True):
+    if human and number == "3":
+        suffix = False
+    persp = create_personal_pronoun_phrase(person, number, prodrop=prodrop, human=human)
+    persp.morphology["CASE"] = "TrueGen"
+    if suffix:
+        np.morphology["POSS"] = "Px" + person.title() + number
+    if not prodrop:
+        np.components["det"] = persp
+        np.order.insert(0, "det")
+
+
+
 
 """
 vp = create_verb_pharse("uneksia")
