@@ -4,8 +4,9 @@ import os
 import random
 import json
 import codecs
+from . import valences
 
-valences = {}
+
 direct_cases = {"Gen", "Par", "Ela", "Ill"}
 indirect_cases = {"Ess", "Tra", "Abl", "All", "Ill"}
 direct_threshold = 0.23
@@ -13,13 +14,7 @@ indirect_threshold = 0.18
 
 stop_adverbs = ["laisesti", "näköisesti", "kuuloisesti", "kaltaisesti"]
 
-def load_valences_from_bin():
-	global valences
-	valence_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'verb_valences_new.json')
-	valences = json.load(codecs.open(valence_path, "r", encoding="utf-8"))
 
-
-load_valences_from_bin()
 
 
 def cases_total(verb, cases_list):

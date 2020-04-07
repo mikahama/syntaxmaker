@@ -7,6 +7,7 @@ import random
 from . import pronoun_tool
 from . import adposition_tool
 import os
+from . import noun_tool
 
 auxiliary_verbs = {"voida" : "A",
 "saada" : "A",
@@ -42,12 +43,12 @@ def create_verb_pharse(head):
     phrase_type = verb_valence.valency_count(head)
     governance = {}
     if phrase_type > 1:
-        #direct object case governancen
+        #direct object case government
         dir_obj = {}
         dir_obj[u"CASE"] = verb_valence.most_frequent_case(verb_valence.verb_direct_objects(head))
         governance["dir_object"] = dir_obj
     if phrase_type > 2:
-        #indirect object case governance
+        #indirect object case goverment
         indir_obj = {}
         indir_obj[u"CASE"] = verb_valence.most_frequent_case(verb_valence.verb_indirect_objects(head))
         governance["indir_object"] = indir_obj
@@ -78,14 +79,15 @@ def create_personal_pronoun_phrase(person = "1", number = "SG", prodrop=False):
     pp.head.pos = "PPron"
     return pp
 
-def create_copula_phrase(predicative_case="Nom"):
+def create_copula_phrase(predicative_case=None, predicative_number=None):
     global grammar
     structure = grammar["VP_COPULA"]
-    governance = { "predicative" :  {u"CASE" : predicative_case}}
+    governance = { "predicative" :  {u"CASE" : predicative_case, u"NUM":predicative_number, u"PREDICATIVE":True}}
     structure["governance"] = governance
     vp = Phrase("olla", structure)
     vp.morphology["VOICE"] = "ACT"
     return vp
+
 
 def negate_verb_pharse(vp):
     aux = create_phrase("GENERIC_P", "ei")
@@ -193,12 +195,16 @@ def add_relative_clause_to_np(np, realtivep, case=None, subject=False):
     np.components["relative_attribute"] = realtivep
     np.order.append("relative_attribute")
 
-def add_advlp_to_vp(vp, advlp):
+def add_advlp_to_vp(vp, advlp, place_type=None, default_locative_category="internal"):
     index = 0
     for component in vp.components:
         if component.startswith("AdvlP"):
-            index = index+1
+            index = index + 1
     comp_name = "AdvlP" + str(index)
+    if place_type is not None:
+        loc = noun_tool.get_locative(advlp.head.lemma) or default_locative_category
+        advlp.morphology["CASE"] = noun_tool.resolve_locative_case(loc, place_type)
+
     vp.components[comp_name] = advlp
     vp.order.append(comp_name)
 

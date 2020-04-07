@@ -33,15 +33,12 @@ front_vowels = "äöy"
 vowels = "aeiouyäö"
 
 def inflect(word, pos, args):
-    for el in args:
-        if not new_python and type(args[el]) is unicode:
-            args[el] = args[el].encode('utf-8')
-
-    if not new_python and type(word) is unicode:
-        word = word.encode('utf-8')
-    word = word.replace("|", "")
+    beginning = ""
+    if "|" in word:
+        beginning, word = word.rsplit("|",1)
+        beginning = beginning.replace("|","")
     if len(args) == 0:
-        return word
+        return beginning + word
     if pos == "GENERIC":
         return word
     elif pos == "V":
@@ -69,12 +66,12 @@ def inflect(word, pos, args):
             ei_form = ei_forms[args["NUM"]+args["PERS"]]
             if "CLIT" in args and args["CLIT"] == "KO":
                 ei_form = ei_form + "kö"
-            return ei_form
+            return beginning + ei_form
 
         if "INF" in args:
             if args["INF"] == "A":
                 #syödä, juoda
-                return word
+                return beginning + word
             else:
                 #syömään, juomaan
                 omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE="+voice+"][INF="+args["INF"]+"][CASE=ILL]"
@@ -114,9 +111,9 @@ def inflect(word, pos, args):
         case = args["CASE"].upper()
         if case == "NOM":
             if args["NUM"] == "SG":
-                return "joka"
+                return beginning + "joka"
             else:
-                return "jotka"
+                return beginning + "jotka"
         omorfi_query = "[WORD_ID="+word+"][POS=PRONOUN][SUBCAT=RELATIVE][NUM="+args["NUM"]+"][CASE="+case+"]"
     else:
         if pos == "N":
@@ -133,9 +130,9 @@ def inflect(word, pos, args):
     word_form = new_generator(omorfi_query)
     if word_form is None:
         #Generation failed!
-        return backup_inflect(word, pos, args)
+        return beginning + backup_inflect(word, pos, args)
     else:
-        return word_form
+        return beginning + word_form
 
 def backup_inflect(word, pos, args):
     if pos == "NOUN" or pos == "ADJECTIVE":

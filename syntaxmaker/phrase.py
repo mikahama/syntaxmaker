@@ -61,6 +61,14 @@ class Phrase:
                     governance = {}
                     if item in self.governance:
                         governance = self.governance[item]
+                    if "PREDICATIVE" in governance and governance["PREDICATIVE"]:
+                        if governance["NUM"] is None:
+                            governance["NUM"] = self.components["subject"].morphology["NUM"]
+                        if governance["CASE"] is None:
+                            if governance["NUM"] == "SG":
+                                governance["CASE"] = "Nom"
+                            else:
+                                governance["CASE"] = "Par"
                     string_representation = string_representation + " " + phrase.to_string(governance)
         return string_representation.strip()
 
