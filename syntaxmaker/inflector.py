@@ -130,8 +130,11 @@ def inflect(word, pos, args):
             args["CASE"] = "NOM"
         else:
             args["CASE"] = args["CASE"].upper()
+        possessive = ""
+        if "POSS" in args:
+            possessive = "+" + args["POSS"]
         #omorfi_query = "[WORD_ID="+word+"][POS="+pos+"][NUM="+args["NUM"]+"][CASE="+args["CASE"]+"]"
-        omorfi_query = word +"+" +pos+"+" + args["NUM"].title() +"+" + args["CASE"].title()
+        omorfi_query = word +"+" +pos+"+" + args["NUM"].title() +"+" + args["CASE"].title() + possessive + clit
     word_form = uralicApi.generate(omorfi_query, "fin")
     if len(word_form) == 0:
         #Generation failed!

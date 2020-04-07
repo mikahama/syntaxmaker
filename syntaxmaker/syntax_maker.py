@@ -252,12 +252,12 @@ def create_adposition_phrase(adposition, np):
     return phrase
 
 def add_possessive_to_np(np, person, number, prodrop=False, human=False, suffix=True):
-    if human and number == "3":
+    if human and person == "3":
         suffix = False
     persp = create_personal_pronoun_phrase(person, number, prodrop=prodrop, human=human)
     persp.morphology["CASE"] = "TrueGen"
     if suffix:
-        np.morphology["POSS"] = "Px" + person.title() + number
+        np.morphology["POSS"] = "Px" + number.title() + person
     if not prodrop:
         np.components["det"] = persp
         np.order.insert(0, "det")
