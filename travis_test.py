@@ -49,7 +49,7 @@ class TestFSTS(unittest.TestCase):
     def test_imp(self):
         vp = copy.deepcopy(self.vp)
         set_vp_mood_and_tense(vp, mood="IMPRT")
-        self.assertEqual(str(vp) , "uneksikoon erittäin korkeista aalloista")
+        self.assertEqual(str(vp) , "rantaleijonat uneksikoot erittäin korkeista aalloista")
 
     def test_quest(self):
         vp = copy.deepcopy(self.vp)
