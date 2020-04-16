@@ -119,10 +119,16 @@ def inflect(word, pos, args):
         #omorfi_query = "[WORD_ID="+word+"][POS=PRONOUN][SUBCAT=RELATIVE][NUM="+args["NUM"]+"][CASE="+case+"]"
         omorfi_query = word + "+Pron+Rel+"+args["NUM"].title()+"+" + case.title()
     else:
+        degree = ""
         if pos == "N":
             pos = "N"
         elif pos == "N+Prop":
             pass
+        elif pos == "Adv":
+            if "DEGREE" in args:
+                pos = "A"
+                args["CASE"] = "Ins"
+                args["NUM"] = "Pl"
         else:
             pos = "A"
 
@@ -130,11 +136,13 @@ def inflect(word, pos, args):
             args["CASE"] = "NOM"
         else:
             args["CASE"] = args["CASE"].upper()
+        if "DEGREE" in args:
+            degree = "+" + args["DEGREE"]
         possessive = ""
         if "POSS" in args:
             possessive = "+" + args["POSS"]
         #omorfi_query = "[WORD_ID="+word+"][POS="+pos+"][NUM="+args["NUM"]+"][CASE="+args["CASE"]+"]"
-        omorfi_query = word +"+" +pos+"+" + args["NUM"].title() +"+" + args["CASE"].title() + possessive + clit
+        omorfi_query = word +"+" +pos+ degree +"+" + args["NUM"].title() +"+" + args["CASE"].title() + possessive + clit
     word_form = uralicApi.generate(omorfi_query, "fin")
     if len(word_form) == 0:
         #Generation failed!

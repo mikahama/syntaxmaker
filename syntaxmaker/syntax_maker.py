@@ -59,25 +59,34 @@ default_np_morphology = {u"CASE": "Nom", u"NUM": "SG", u"PERS": "3"}
 
 def create_phrase(name, head, morphology={}):
     global grammar
-    structure = grammar[name]
+    if name in grammar:
+        structure = grammar[name]
+    else:
+        structure = grammar["GENERIC_P"]
     if name == "NP":
         for key in default_np_morphology.keys():
             if key not in morphology:
                 morphology[key] = default_np_morphology[key]
     return Phrase(head, structure, morphology)
 
-def create_noun_phrase(head, morphology={}):
-    return create_phrase("NP", head, morphology)
+def create_noun_phrase(head, morphology={}, number=None, case=None):
+    if case is not None:
+        morphology["CASE"] = case
+    if number is not None:
+        morphology["NUM"] = number
+    return create_phrase("NP", head, morphology=morphology)
 
-def create_adjective_phrase(head, morphology={}):
-    return create_phrase("AP", head, morphology)
+def create_adjective_phrase(head, morphology={}, degree=None):
+    if degree is not None:
+        morphology["DEGREE"] = degree
+    return create_phrase("AP", head, morphology=morphology)
 
 def create_personal_pronoun_phrase(person = "1", number = "SG", prodrop=False, human=False):
     if prodrop and person != "3":
         pronoun = None
     else:
         pronoun = pronoun_tool.pronoun(number + person, human=human)
-    pp = create_phrase("NP", pronoun, {u"PERS": person, u"NUM": number})
+    pp = create_phrase("NP", pronoun, morphology={u"PERS": person, u"NUM": number})
     pp.head.pos = "PPron"
     return pp
 
@@ -236,7 +245,7 @@ def add_advlp_to_vp(vp, advlp, place_type=None, default_locative_category="inter
     vp.components[comp_name] = advlp
     vp.order.append(comp_name)
 
-def create_adposition_phrase(adposition, np):
+def create_adposition_phrase(adposition, np=None):
     if adposition is None:
         adposition = adposition_tool.get_an_adposition()
     case = adposition_tool.postposition_case(adposition)
@@ -248,8 +257,15 @@ def create_adposition_phrase(adposition, np):
             return None
         phrase = create_phrase("PrepP", adposition)
     phrase.governance["complement"] = {u"CASE": case}
+    if np is None:
+        np = ""
     phrase.components["complement"] = np
     return phrase
+
+def create_adverb_phrase(head, morphology={}, degree=None):
+    if degree is not None:
+        morphology["DEGREE"] = degree
+    return create_phrase("AdvP", head, morphology=morphology)
 
 def add_possessive_to_np(np, person, number, prodrop=False, human=False, suffix=True):
     if human and person == "3":

@@ -157,6 +157,46 @@ class TestFSTS(unittest.TestCase):
         add_auxiliary_verb_to_vp(vp, "jäädä")
         self.assertEqual(str(vp) , "rantaleijonat jäävät uneksimaan erittäin korkeista aalloista")
 
+    def test_adj_comp(self):
+        vp = create_copula_phrase()
+        subject = create_phrase("NP", "koira", {u"PERS": "3", u"NUM": "SG"})
+        predicative = create_phrase("NP", "eläin")
+        adj = create_adjective_phrase("hieno", degree="Comp")
+        predicative.components["attribute"] = adj
+        vp.components["subject"] = subject
+        vp.components["predicative"] = predicative
+        self.assertEqual(str(vp) , "koira on hienompi eläin")
+
+    def test_adj_superl(self):
+        vp = create_copula_phrase()
+        subject = create_phrase("NP", "koira", {u"PERS": "3", u"NUM": "SG"})
+        predicative = create_phrase("NP", "eläin")
+        adj = create_adjective_phrase("hieno", degree="Superl")
+        predicative.components["attribute"] = adj
+        vp.components["subject"] = subject
+        vp.components["predicative"] = predicative
+        self.assertEqual(str(vp) , "koira on hienoin eläin")
+
+    def test_adv_superl(self):
+        vp = create_copula_phrase()
+        subject = create_phrase("NP", "koira", {u"PERS": "3", u"NUM": "SG"})
+        predicative = create_phrase("NP", "eläin")
+        adj = create_adverb_phrase("yleinen", degree="Superl")
+        predicative.components["attribute"] = adj
+        vp.components["subject"] = subject
+        vp.components["predicative"] = predicative
+        self.assertEqual(str(vp) , "koira on yleisimmin eläin")
+
+    def test_adv_comp(self):
+        vp = create_copula_phrase()
+        subject = create_phrase("NP", "koira", {u"PERS": "3", u"NUM": "SG"})
+        predicative = create_phrase("NP", "eläin")
+        adj = create_adverb_phrase("yleinen", degree="Comp")
+        predicative.components["attribute"] = adj
+        vp.components["subject"] = subject
+        vp.components["predicative"] = predicative
+        self.assertEqual(str(vp) , "koira on yleisemmin eläin")
+
 
 if __name__ == '__main__':
     unittest.main()
