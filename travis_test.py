@@ -1,12 +1,17 @@
 #encoding: utf-8
 import unittest
+from uralicNLP import uralicApi
+if not uralicApi.is_language_installed("fin"):
+    uralicApi.download("fin",show_progress=False)
 from syntaxmaker.syntax_maker import *
 import codecs
 import copy
 
+
 class TestFSTS(unittest.TestCase):
 
     def setUp(self):
+        
         vp = create_verb_pharse("uneksia")
         subject = create_phrase("NP", "rantaleijona", {u"PERS": "3", u"NUM": "PL"})
         dobject = create_phrase("NP", "aalto", {u"PERS": "3", u"NUM": "PL"})
