@@ -31,11 +31,27 @@ class TestFSTS(unittest.TestCase):
         vp = copy.deepcopy(self.vp)
         turn_vp_into_prefect(vp)
         self.assertEqual(str(vp) , "rantaleijonat ovat uneksineet erittäin korkeista aalloista")
+  
     def test_prefect_pass(self):
         vp = copy.deepcopy(self.vp)
         turn_vp_into_prefect(vp)
         turn_vp_into_passive(vp)
         self.assertEqual(str(vp) , "on uneksittu erittäin korkeista aalloista")
+    
+    def test_prefect_pass_cond(self):
+        vp = copy.deepcopy(self.vp)
+        turn_vp_into_prefect(vp)
+        turn_vp_into_passive(vp)
+        set_vp_mood_and_tense(vp, mood="COND")
+        self.assertEqual(str(vp) , "olisi uneksittu erittäin korkeista aalloista")
+
+    def test_prefect_pass_pot(self):
+        vp = copy.deepcopy(self.vp)
+        turn_vp_into_prefect(vp)
+        turn_vp_into_passive(vp)
+        set_vp_mood_and_tense(vp, mood="POTN")
+        self.assertEqual(str(vp) , "lie uneksittu erittäin korkeista aalloista")
+
     def test_pot(self):
         vp = copy.deepcopy(self.vp)
         set_vp_mood_and_tense(vp, mood="POTN")

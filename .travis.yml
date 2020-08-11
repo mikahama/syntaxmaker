@@ -1,0 +1,13 @@
+language: python
+python:
+  - "3.6"
+# command to install dependencies
+install:
+  - pip install python-coveralls
+  - python setup.py install
+# command to run tests
+script:
+  - coverage run travis_test.py
+after_success:
+  - coveralls
+

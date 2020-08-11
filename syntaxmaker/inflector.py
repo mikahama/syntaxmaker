@@ -39,10 +39,8 @@ def inflect(word, pos, args):
     elif pos == "V":
         if "PERS" in args and args["PERS"] == "4":
             voice = "PSS"
-            pers_string = "[PERS=PE4]"
         else:
             voice = "ACT"
-            pers_string = ""
         if "MOOD" not in args or args["MOOD"] == "INDV":
             args["MOOD"] = "IND"
         if args["MOOD"] == "POTN":
@@ -84,14 +82,13 @@ def inflect(word, pos, args):
             #syön, juon
             if "TEMPAUX"  in args and args["PERS"] == "4":
                 #on syöty
-                omorfi_query = word + "+V+Pss+PrfPrc+Sg+Nom"
+                omorfi_query = word + "+V+Act+"+args["MOOD"].title()+tense+"+Sg3"
                 #omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE=ACT][MOOD="+ args["MOOD"] +"]"+tense+"[PERS=SG3]"
             elif "PERS" in args and args["PERS"] == "4":
                 #omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE="+voice+"][MOOD="+ args["MOOD"] +"]"+tense+pers_string +clit
                 omorfi_query = word + "+V+Pss+"+args["MOOD"].title()+tense+"+Pe4" +clit
             else:
                 omorfi_query = word + "+V+"+voice.title()+"+"+ args["MOOD"].title() +tense+ "+" + args["NUM"].title() + args["PERS"]+ clit
-                #print(omorfi_query)
                 #omorfi_query = "[WORD_ID="+word+"][POS=VERB][VOICE="+voice+"][MOOD="+ args["MOOD"] +"]"+tense+"[PERS="+args["NUM"]+args["PERS"]+"]" +clit
     elif pos == "PPron":
         #personal pronoun
@@ -143,7 +140,7 @@ def inflect(word, pos, args):
             possessive = "+" + args["POSS"]
         #omorfi_query = "[WORD_ID="+word+"][POS="+pos+"][NUM="+args["NUM"]+"][CASE="+args["CASE"]+"]"
         omorfi_query = word +"+" +pos+ degree +"+" + args["NUM"].title() +"+" + args["CASE"].title() + possessive + clit
-    word_form = uralicApi.generate(omorfi_query, "fin")
+    word_form = _filter_generated(uralicApi.generate(omorfi_query, "fin"), word)
     if len(word_form) == 0:
         #Generation failed!
         if pos == "N":
@@ -152,6 +149,16 @@ def inflect(word, pos, args):
             return beginning + backup_inflect(word, pos, args)
     else:
         return beginning + word_form[0][0]
+
+def _filter_generated(res, lemma):
+    if len(res) < 2:
+        return res
+    for r in res:
+        r_as = uralicApi.analyze(r[0], "fin", dictionary_forms=True)
+        for r_a in r_as:
+            r_a = r_a[0]
+            if "+Use/Arch" not in r_a and "+Dial/" not in r_a and r_a.startswith(lemma):
+                return [r]
 
 def backup_inflect(word, pos, args):
     if pos == "NOUN" or pos == "ADJECTIVE":
