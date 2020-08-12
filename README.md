@@ -16,7 +16,7 @@ Run
     python -m uralicNLP.download -l fin
 
 
-#Usage
+# Usage
 
 An example for generating a sentence in Finnish:
 
