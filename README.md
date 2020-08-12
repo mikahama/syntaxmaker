@@ -15,7 +15,26 @@ Run
     pip install syntaxmaker
     python -m uralicNLP.download -l fin
 
-After installing it, go to [Creating a sentence, the basics](https://github.com/mikahama/syntaxmaker/wiki/Creating-a-sentence,-the-basics) for a quick start guide.
+
+# Usage
+
+An example for generating a sentence in Finnish:
+
+    from syntaxmaker.syntax_maker import *
+    vp = create_verb_pharse("antaa")
+    subject = create_phrase("NP", "hevonen", {"NUM": "PL"})
+
+    dobject = create_phrase("NP", "lahja", {"NUM": "PL"})
+    dobject.components["attribute"] = create_phrase("AP", "mahtava")
+    dobject.components["attribute"].components["attribute"] = create_phrase("AdvP", "erittäin")
+
+    indobject = create_phrase("NP", "lehmä")
+    vp.components["subject"] = subject
+    vp.components["dir_object"] = dobject
+    vp.components["indir_object"] = indobject
+    >> hevoset antavat erittäin mahtavia lahjoja lehmälle
+
+Go to [Creating a sentence, the basics](https://github.com/mikahama/syntaxmaker/wiki/Creating-a-sentence,-the-basics) for a quick start guide.
 
 A good source of example code with the expected output can be found in [the Travis test file](https://github.com/mikahama/syntaxmaker/blob/master/travis_test.py).
 
