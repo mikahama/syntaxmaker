@@ -35,4 +35,4 @@ vp.components["dir_object"] = dobject
 turn_vp_into_prefect(vp)
 turn_vp_into_passive(vp)
 set_vp_mood_and_tense(vp, tense="PAST")
-print(str(vp))
+print(vp)

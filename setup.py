@@ -14,7 +14,7 @@ from os import path
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the relevant file
-with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
@@ -23,17 +23,17 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.1.1',
+    version='2.0.0',
     zip_safe=False,
     description='The NLG tool for Finnish',
     long_description=long_description,
-
+    long_description_content_type="text/markdown",
     # The project's main homepage.
     url='https://github.com/mikahama/syntaxmaker/',
 
     # Author details
-    author='Mika Hämäläinen, Dept. of  Modern Languages, University of Helsinki',
-    author_email='mika.hamalainen@cs.helsinki.fi',
+    author='Mika Hämäläinen, University of Helsinki',
+    author_email='mika.hamalainen@helsinki.fi',
 
     # Choose your license
     license='Apache License, Version 2.0',
