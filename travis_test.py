@@ -62,6 +62,39 @@ class TestFSTS(unittest.TestCase):
         set_vp_mood_and_tense(vp, mood="POTN")
         self.assertEqual(str(vp) , "rantaleijonat uneksinevat erittäin korkeista aalloista")
 
+    def test_total_plural(self):
+        vp = create_verb_pharse("antaa")
+        subject = create_phrase("NP", "hevonen", {"NUM": "PL"})
+
+        dobject = create_phrase("NP", "lahja", {"NUM": "PL"})
+        dobject.components["attribute"] = create_phrase("AP", "hyvä")
+        dobject.components["attribute"].components["attribute"] = create_phrase("AdvP", "erittäin")
+
+        indobject = create_phrase("NP", "lehmä")
+        vp.components["subject"] = subject
+        vp.components["dir_object"] = dobject
+        vp.components["indir_object"] = indobject
+        self.assertEqual(str(vp) , "hevoset antavat erittäin hyviä lahjoja lehmälle")
+
+    def test_total_plural_neg(self):
+        vp = create_verb_pharse("antaa")
+        subject = create_phrase("NP", "hevonen", {"NUM": "PL"})
+
+        dobject = create_phrase("NP", "lahja", {"NUM": "PL"})
+        dobject.components["attribute"] = create_phrase("AP", "hyvä")
+        dobject.components["attribute"].components["attribute"] = create_phrase("AdvP", "erittäin")
+
+        indobject = create_phrase("NP", "lehmä")
+        vp.components["subject"] = subject
+        vp.components["dir_object"] = dobject
+        vp.components["indir_object"] = indobject
+        negate_verb_pharse(vp)
+        self.assertEqual(str(vp) , "hevoset eivät anna erittäin hyviä lahjoja lehmälle")
+
+    def test_adj(self):
+        ap = create_adjective_phrase("kaunis", degree="Comp")
+        self.assertEqual(str(ap), "kauniimpi")
+        
     def test_cond(self):
         vp = copy.deepcopy(self.vp)
         set_vp_mood_and_tense(vp, mood="COND")

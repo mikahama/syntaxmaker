@@ -4,14 +4,11 @@ from .head import Head
 import copy
 import re, sys
 
+unicode = str
+
 class Phrase:
     def __init__(self, head, structure, morphology={}):
-        if (sys.version_info > (3, 0)):
-            # Python 3
-            self.new_python = True
-        else:
-            # Python 2
-            self.new_python = False
+        self.new_python = True
         self.parent = None
         self.head = Head(head, structure["head"])
         self.components = copy.deepcopy(structure["components"])
@@ -33,13 +30,17 @@ class Phrase:
     def resolve_agreement(self):
         forms = {}
         for key in self.agreement:
-            if key == "parent":
+            if key == "parent" and self.parent is not None:
                 morphology = self.parent.morphology
-            elif key.startswith("parent->"):
+            elif key.startswith("parent->")and self.parent is not None:
                 key_p = key[8:]
                 morphology = self.parent.components[key_p].morphology
-            else:
+            elif key in self.components:
                 morphology = self.components[key].morphology
+            else:
+                r = {"CASE": "Nom", "NUM": "SG", "PERS": "3"}
+                r.update(self.morphology)
+                return r
             for agreement_type in self.agreement[key]:
                 forms[agreement_type] = morphology[agreement_type]
         return forms
@@ -47,6 +48,12 @@ class Phrase:
     def to_string(self, received_governance = {}):
         self.morphology.update(received_governance)
         string_representation = ""
+        if "dir_object" in self.components:
+            if type(self.components["dir_object"]) is not str:
+                if "NUM" in self.components["dir_object"].morphology and self.components["dir_object"].morphology["NUM"] == "PL":
+                    if "dir_object" in self.governance:
+                        if self.governance["dir_object"]["CASE"] == "Gen":
+                            self.governance["dir_object"]["CASE"] = "Par"
         for item in self.order:
             if item == "head":
                 head_word = self.head.get_form(self.morphology, self.resolve_agreement())

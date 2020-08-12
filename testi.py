@@ -25,14 +25,17 @@ vp.components["dir_object"] = dobject
 
 print vp
 """
-vp = create_verb_pharse("uneksia")
-subject = create_phrase("NP", "rantaleijona", {u"PERS": "3", u"NUM": "PL"})
-dobject = create_phrase("NP", "aalto", {u"PERS": "3", u"NUM": "PL"})
-dobject.components["attribute"] = create_phrase("AP", "korkea")
+
+vp = create_verb_pharse("antaa")
+subject = create_phrase("NP", "hevonen", {"NUM": "PL"})
+
+dobject = create_phrase("NP", "lahja", {"NUM": "PL"})
+dobject.components["attribute"] = create_phrase("AP", "mahtava")
 dobject.components["attribute"].components["attribute"] = create_phrase("AdvP", "erittäin")
+
+indobject = create_phrase("NP", "lehmä")
 vp.components["subject"] = subject
 vp.components["dir_object"] = dobject
-turn_vp_into_prefect(vp)
-turn_vp_into_passive(vp)
-set_vp_mood_and_tense(vp, tense="PAST")
+vp.components["indir_object"] = indobject
+
 print(vp)
