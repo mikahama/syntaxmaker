@@ -55,6 +55,9 @@ def create_verb_pharse(head):
     vp.morphology["VOICE"] = "ACT"
     return vp
 
+#oopsie, typos...
+create_verb_phrase = create_verb_pharse
+
 default_np_morphology = {u"CASE": "Nom", u"NUM": "SG", u"PERS": "3"}
 
 def create_phrase(name, head, morphology={}):
@@ -112,6 +115,8 @@ def negate_verb_pharse(vp):
         if vp.governance["dir_object"][u"CASE"] == "Gen" or vp.governance["dir_object"][u"CASE"] == "Nom":
             #Genitive or nomintaive objects to partitive syön kakun/syödään kakku -> en syö kakkua/ei syödä kakkua
             vp.governance["dir_object"][u"CASE"] = "Par"
+
+negate_verb_phrase = negate_verb_pharse
 
 def turn_vp_into_question(vp):
     if "NEG" in vp.morphology:
