@@ -32,6 +32,7 @@ An example for generating a sentence in Finnish:
     vp.components["subject"] = subject
     vp.components["dir_object"] = dobject
     vp.components["indir_object"] = indobject
+    print(vp)
     >> hevoset antavat erittäin mahtavia lahjoja lehmälle
 
 Go to [Creating a sentence, the basics](https://github.com/mikahama/syntaxmaker/wiki/Creating-a-sentence,-the-basics) for a quick start guide.
