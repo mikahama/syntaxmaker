@@ -32,8 +32,8 @@ setup(
     url='https://github.com/mikahama/syntaxmaker/',
 
     # Author details
-    author='Mika Hämäläinen, University of Helsinki',
-    author_email='mika.hamalainen@helsinki.fi',
+    author='Mika Hämäläinen',
+    author_email='mika@rootroo.com',
 
     # Choose your license
     license='Apache License, Version 2.0',
