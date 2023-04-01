@@ -1,7 +1,7 @@
 Syntax maker
 =======
 
-[![Build Status](https://travis-ci.com/mikahama/syntaxmaker.svg?branch=master)](https://travis-ci.com/mikahama/syntaxmaker) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3483626.svg)](https://doi.org/10.5281/zenodo.3483626)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3483626.svg)](https://doi.org/10.5281/zenodo.3483626)
 
 The tool NLG tool for Finnish by [Mika Hämäläinen](https://mikakalevi.com)
 
