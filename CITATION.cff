@@ -1,0 +1,30 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Syntax Maker
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Mika
+    family-names: Hämäläinen
+  - given-names: Jack
+    family-names: Rueter
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.1143056
+    description: Zenodo
+repository-code: 'https://github.com/mikahama/syntaxmaker'
+date-released: '2018-01-09'
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Hämäläinen"
+    given-names: "Mika"
+  - family-names: "Rueter"
+    given-names: "Jack"
+  journal: "Proceedings of the Fourth International Workshop on Computational Linguistics of Uralic Languages"
+  title: "Development of an Open Source Natural Language Generation Tool for Finnish"
+  year: 2018
