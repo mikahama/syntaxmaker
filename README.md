@@ -50,9 +50,3 @@ Hämäläinen, Mika and Rueter, Jack  2018.  [Development of an Open Source Natu
 # More information?
 
 Just go ahead and [take a look at the wiki](https://github.com/mikahama/syntaxmaker/wiki) or my [blog post about Syntax maker](https://mikalikes.men/create-finnish-sentences-computationally-in-python-nlg/).
-
-# Business solutions
-
-<img src="https://rootroo.com/cropped-logo-01-png/" alt="Rootroo logo" width="128px" height="128px">
-
-My company, [Rootroo, offers consulting related to Finnish NLG solutions](https://rootroo.com/). We have a strong academic background in the state-of-the-art AI solutions for every NLP need. Just contact us, we won't bite.
